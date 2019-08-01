@@ -1,0 +1,5 @@
+{
+    "icon": "./build/favicon.ico",
+    "start": "./build/index.html",
+    "isFile": true
+}

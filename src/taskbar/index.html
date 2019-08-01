@@ -55,8 +55,7 @@
         const { ipcRenderer } = require('electron');
         const { join } = require('path');
         
-        const appsFolder = "/home/miroljub/Desktop/electron-projects/electron-os/apps";
-
+        const appsFolder = join(__dirname, "../../apps");
         const apps = fs.readdirSync(appsFolder, { withFileTypes: true })
         .filter(dirent => dirent.isDirectory())
         .map(dirent => dirent.name);
