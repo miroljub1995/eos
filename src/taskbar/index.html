@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        html,
+        body,
+        * {
+            margin: 0px;
+            padding: 0px;
+            width: 100%;
+        }
+
+        * {
+            float: left;
+        }
+
+        .container {
+            height: 100%;
+            border-radius: 15px;
+            background: rgba(18, 60, 175, 0.25);
+            width: 100%;
+        }
+
+        .btn {
+            background: rgba(0, 0, 0, 0.5);
+            /* background-image: url("https://d2eip9sf3oo6c2.cloudfront.net/tags/images/000/001/123/landscape/electronlogo.png"); */
+            background-size: cover;
+            background-position: center;
+            /* display: inline-block; */
+            /* border: none; */
+            width: 60px;
+            height: 60px;
+            transition: all 0.2s;
+            cursor: pointer;
+            margin: 5px;
+            border-radius: 33px;
+        }
+
+        .btn:hover {
+            margin: 2px;
+            width: 66px;
+            height: 66px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container" class="container">
+        <!-- <div id="app1" class="btn"></div> -->
+    </div>
+    <script>
+        const fs = require('fs');
+        const { ipcRenderer } = require('electron');
+        const { join } = require('path');
+        
+        const appsFolder = "/home/miroljub/Desktop/electron-projects/electron-os/apps";
+
+        const apps = fs.readdirSync(appsFolder, { withFileTypes: true })
+        .filter(dirent => dirent.isDirectory())
+        .map(dirent => dirent.name);
+
+        // console.log(apps);
+
+        const container = document.getElementById('container');
+        apps.forEach(app => {
+            const appFolder = join(appsFolder, app);
+            var appConfig = JSON.parse(fs.readFileSync(join(appFolder, 'app.json'), 'utf8'));
+
+            let appDiv = document.createElement('div');
+            appDiv.className = 'btn';
+            appDiv.style.backgroundImage = `url('${join(appFolder, appConfig.icon)}')`;
+
+            let start = appConfig.start;
+            if(appConfig.isFile) {
+                start = join("file://", appFolder, start);
+            }
+
+            appDiv.onclick = () => {
+                ipcRenderer.send('itemClick', { app, start });
+            }
+
+            container.appendChild(appDiv);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Simple file reader</title>
+</head>
+
+<body>
+    <div>This is simple file reader with modules</div>
+    <div id="main"></div>
+
+    <script>
+        const fs = require('fs-extra');
+
+        const div = document.getElementById('main');
+
+        const packageJSON = fs.readJsonSync('./package.json', { throws: false });
+
+
+        div.appendChild((_ => {
+            const newDiv = document.createElement('div');
+            newDiv.innerHTML = packageJSON.name;
+            return newDiv;
+        })());
+        div.appendChild((_ => {
+            const newDiv = document.createElement('div');
+            newDiv.innerHTML = packageJSON.version;
+            return newDiv;
+        })());
+    </script>
+</body>
+
+</html>
