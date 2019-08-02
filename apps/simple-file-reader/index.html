@@ -7,11 +7,23 @@
 </head>
 
 <body>
-    <div>This is simple file reader with modules</div>
     <div id="main"></div>
 
     <script>
-        const fs = require('fs-extra');
+        var fs = undefined;
+        try {
+            fs = require('fs-extra');
+        }
+        catch (error) {
+            let newDiv = document.createElement('div');
+            newDiv.innerHTML = 'fs-extra NOT loaded successfully, try installing packages';
+            document.body.insertBefore(newDiv, document.getElementById('main'));
+            throw error;
+        }
+
+        let newDiv = document.createElement('div');
+        newDiv.innerHTML = 'fs-extra loaded successfully';
+        document.body.insertBefore(newDiv, document.getElementById('main'));
 
         const div = document.getElementById('main');
 
