@@ -69,7 +69,8 @@
 
             let appDiv = document.createElement('div');
             appDiv.className = 'btn';
-            appDiv.style.backgroundImage = `url('${join(appFolder, appConfig.icon)}')`;
+            imagePath = join(appFolder, appConfig.icon);
+            appDiv.style.backgroundImage = `url('${imagePath/*windows only*/.replace(/\\/g, '\\\\')}')`;
 
             let start = appConfig.start;
             if(appConfig.isFile) {
