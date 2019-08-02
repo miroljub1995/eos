@@ -1,0 +1,13 @@
+{
+  "name": "simple-file-reader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "dependencies": {
+    "fs-extra": "^8.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {},
+  "author": "",
+  "license": "ISC"
+}
