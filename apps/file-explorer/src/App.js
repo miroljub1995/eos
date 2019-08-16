@@ -1,24 +1,50 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, {Component} from 'react';
 import './App.css';
+const fs = window.require('fs');
+const path = window.require('path');
 
-function App() {
+class App extends Component{
+
+  state = {
+    elements:[]
+  }
+
+
+  getElements = (dir) => {
+    let files = fs.readdirSync(dir);
+    const elements = files.map(e => {
+      let element = {};
+      element.name = path.join(dir, e);
+        element.folder = fs.statSync(element.name).isDirectory();
+       //this.setState(state => ({elements: [...state.elements,element]}));
+      return element;
+    });
+    return elements;
+  };
+  
+  render(){
+    const elements = this.getElements("/home/dunja/Desktop/eos");
+    console.log(elements);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Elements elements = {elements}/>
+    </div>
+  )};
+}
+
+const Elements = ({elements}) => {
+  return elements.map(element => {
+    return(
+        <Element key={element} element = {element}/>
+    );
+  });
+ 
+} 
+
+const Element = ({element}) => {
+  return(
+    <div>
+      {element.name}
     </div>
   );
 }
