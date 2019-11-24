@@ -4,7 +4,7 @@
   "description": "",
   "main": "./src/main/main.js",
   "scripts": {
-    "start": "electron ."
+    "start": "npx electron ."
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/miroljub1995/eos/issues"
   },
-  "homepage": "https://github.com/miroljub1995/eos#readme"
+  "homepage": "https://github.com/miroljub1995/eos#readme",
+  "dependencies": {
+    "electron": "^7.1.2"
+  }
 }
