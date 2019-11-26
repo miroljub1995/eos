@@ -1,8 +1,11 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const Taskbar = require('../taskbar');
 
+let taskbar;
+let desktop;
+
 function createWindow() {
-    let win = new BrowserWindow({
+    let desktop = new BrowserWindow({
         width: 800,
         height: 600,
         webPreferences: {
@@ -11,10 +14,9 @@ function createWindow() {
         fullscreen: false
     });
 
-    win.loadFile('./src/main/index.html');
-    win.maximize();
+    desktop.loadFile('./src/main/index.html');
 
-    let taskbar = new Taskbar(win);
+    taskbar = new Taskbar(desktop);
     taskbar.onClick(({ app, start }) => {
         let appWin = new BrowserWindow({
             width: 800,
@@ -22,16 +24,17 @@ function createWindow() {
             webPreferences: {
                 nodeIntegration: true
             },
-            parent: win,
+            parent: desktop,
             title: app
         });
         appWin.loadURL(start);
     });
 
-    win.on('closed', () => {
-        taskbar.close();
-        win = null;
+    desktop.maximize();
+    desktop.on('closed', () => {
+        //taskbar.close();
         taskbar = null;
+        desktop = null;
     });
 }
 
