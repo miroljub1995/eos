@@ -1,4 +1,9 @@
 const { BrowserWindow, screen } = require('electron');
+const path = require('path');
+
+let webSecurity = true;
+if(process.env.DEV)
+    webSecurity = false;
 
 const props = {
     width: 900,
@@ -7,7 +12,8 @@ const props = {
     //focusable: false,
     transparent: true,
     webPreferences: {
-        nodeIntegration: true
+        nodeIntegration: true,
+        webSecurity
     }
 };
 
@@ -20,7 +26,11 @@ class Taskbar extends BrowserWindow {
         const sSize = screen.getPrimaryDisplay().size;
         this.setSize(sSize.width, props.height);
 
-        this.loadFile('./src/taskbar/index.html');
+
+        if (process.env.DEV)
+            this.loadURL('http://localhost:3000');
+        else
+            this.loadFile(path.join(__dirname, 'build', 'index.html'));
         let parentSize = parentWin.getSize();
         let parentPos = parentWin.getPosition();
         // this.setPosition(

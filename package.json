@@ -4,7 +4,7 @@
   "description": "",
   "main": "./src/main/main.js",
   "scripts": {
-    "start": "npx electron ."
+    "start": "cross-env DEV=true npx electron ."
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,8 @@
   "homepage": "https://github.com/miroljub1995/eos#readme",
   "dependencies": {
     "electron": "^7.1.2"
+  },
+  "devDependencies": {
+    "cross-env": "^6.0.3"
   }
 }
