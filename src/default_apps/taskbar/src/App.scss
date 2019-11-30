@@ -1,0 +1,54 @@
+body {
+  margin: 0px;
+  padding: 0px;
+  background: rgba(70, 69, 68, 0.98);
+  user-select: none;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.apps {
+  display: flex;
+}
+
+
+%item-base {
+  display: flex;
+  transition: all 0.2s;
+  height: 30px;
+  align-items: center;
+  justify-content: center;
+  
+  &:hover {
+    background-color: rgb(85, 85, 85);
+  }
+}
+
+.tray {
+  display: flex;
+  flex-flow: row-reverse;
+  margin-right: 10px;
+}
+
+.tray-item {
+  @extend %item-base;
+  padding: 0 10px;
+  color: white;
+  font-size: 9pt;
+}
+
+.app-item {
+  @extend %item-base;
+  width: 38px;
+}
+
+.icon {
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 20px;
+  height: 17px;
+}
