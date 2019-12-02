@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import './App.scss';
 
-console.log(window.process);
-
 function App() {
 
   const fs = window.require('fs');
@@ -29,8 +27,6 @@ function App() {
     const imagePath = join(appFolder, appConfig.icon);
     const imageUrl = `url('${imagePath.replace(/\\/g, '/')}')`;
 
-    console.log(imagePath);
-    console.log(imageUrl);
     const appView = (
       <div className="app-item" key={app} onClick={() => ipcRenderer.send('itemClick', { app, start })}>
         <div className="icon" style={{ backgroundImage: imageUrl }}>
