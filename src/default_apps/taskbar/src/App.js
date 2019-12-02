@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import './App.scss';
 
+console.log(window.process);
+
 function App() {
 
   const fs = window.require('fs');
-  const { ipcRenderer } = window.require('electron');
+  const { ipcRenderer, remote } = window.require('electron');
   const { join } = window.require('path');
 
 
-  // const appsFolder = join(__dirname, "../../../apps");
-  const appsFolder = "D:\\eos\\apps";
+  const rootFolder = remote.app.getAppPath();
+  const appsFolder = join(rootFolder, 'apps');
 
   const apps = fs.readdirSync(appsFolder, { withFileTypes: true })
     .filter(dirent => dirent.isDirectory())
@@ -25,9 +27,13 @@ function App() {
     }
 
     const imagePath = join(appFolder, appConfig.icon);
+    const imageUrl = `url('${imagePath.replace(/\\/g, '/')}')`;
+
+    console.log(imagePath);
+    console.log(imageUrl);
     const appView = (
       <div className="app-item" key={app} onClick={() => ipcRenderer.send('itemClick', { app, start })}>
-        <div className="icon" style={{ backgroundImage: `url('${imagePath/*windows only*/.replace(/\\/g, '\\\\')}')` }}>
+        <div className="icon" style={{ backgroundImage: imageUrl }}>
         </div>
       </div>
     );
