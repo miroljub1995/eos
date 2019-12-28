@@ -2,7 +2,7 @@ const { BrowserWindow, screen } = require('electron');
 const path = require('path');
 
 let webSecurity = true;
-if(process.env.DEV)
+if (process.env.DEV)
     webSecurity = false;
 
 const props = {
@@ -20,8 +20,13 @@ const props = {
 const topOffset = 75;
 
 class Taskbar extends BrowserWindow {
+
+    apps = {};
+
+
     constructor(parentWin) {
         super({ ...props, parent: parentWin });
+        this.desktopWin = this.parentWin;
 
         const sSize = screen.getPrimaryDisplay().size;
         this.setSize(sSize.width, props.height);
@@ -43,10 +48,28 @@ class Taskbar extends BrowserWindow {
         this.webContents.on('ipc-message', (event, channel, arg) => {
             this.emit(channel, arg);
         });
+        this.initEvents();
     }
 
     onClick = (callback) => {
-        this.on('itemClick', callback);
+        //callback(arg);
+    }
+
+    initEvents() {
+        this.on('itemClick', ({ app, start }) => {
+            let appWin = new BrowserWindow({
+                width: 800,
+                height: 600,
+                webPreferences: {
+                    nodeIntegration: true
+                },
+                parent: this.desktopWin,
+                title: app
+            });
+            this.apps[app] = {
+                windows: [appWin]
+            };
+        });
     }
 }
 
