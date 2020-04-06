@@ -17,10 +17,10 @@
   },
   "homepage": "https://github.com/miroljub1995/eos#readme",
   "dependencies": {
-    "electron": "^7.1.7"
+    "electron": "^8.2.0"
   },
   "devDependencies": {
-    "cross-env": "^6.0.3",
-    "node-sass": "^4.13.0"
+    "cross-env": "^7.0.2",
+    "node-sass": "^4.13.1"
   }
 }

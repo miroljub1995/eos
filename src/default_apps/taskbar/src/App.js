@@ -7,7 +7,6 @@ function App() {
   const { ipcRenderer, remote } = window.require('electron');
   const { join } = window.require('path');
 
-
   const rootFolder = remote.app.getAppPath();
   const appsFolder = join(rootFolder, 'apps');
 
@@ -24,8 +23,12 @@ function App() {
       start = join("file://", appFolder, start);
     }
 
-    const imagePath = join(appFolder, appConfig.icon);
-    const imageUrl = `url('${imagePath.replace(/\\/g, '/')}')`;
+    let imagePath = join(appFolder, appConfig.icon).replace(/\\/g, '/');
+    imagePath = join("file://", imagePath);
+    // const image = fs.readFileSync(imagePath);
+    // const base64 = `url('data:image/png;gase64,${new Buffer(image).toString('base64')}')`;
+    const imageUrl = `url('${imagePath}')`;
+    console.log(imageUrl);
 
     const appView = (
       <div className="app-item" key={app} onClick={() => ipcRenderer.send('itemClick', { app, start })}>

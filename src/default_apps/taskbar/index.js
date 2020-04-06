@@ -7,7 +7,7 @@ if (process.env.DEV)
 
 const props = {
     width: 900,
-    height: 30,
+    height: 300,
     frame: false,
     //focusable: false,
     transparent: true,
@@ -43,7 +43,7 @@ class Taskbar extends BrowserWindow {
         //     parentPos[1] + parentSize[1] - props.height + 190);
         this.setPosition(0, topOffset);
 
-        //this.openDevTools();
+        this.openDevTools();
 
         this.webContents.on('ipc-message', (event, channel, arg) => {
             this.emit(channel, arg);
@@ -54,8 +54,8 @@ class Taskbar extends BrowserWindow {
     onClick = (callback) => {
         //callback(arg);
     }
-
-    initEvents() {
+    
+        initEvents() {
         this.on('itemClick', ({ app, start }) => {
             let appWin = new BrowserWindow({
                 width: 800,
@@ -66,6 +66,7 @@ class Taskbar extends BrowserWindow {
                 parent: this.desktopWin,
                 title: app
             });
+            appWin.loadURL(start);
             this.apps[app] = {
                 windows: [appWin]
             };
