@@ -4,24 +4,6 @@ const { spawn, spawnSync } = require('child_process');
 const path = require('path');
 
 let taskbar;
-let desktop;
-
-let proc = null;
-if (process.env.DEV) {
-    console.log('starting process');
-    let cmd = 'npm';
-    if (process.platform == 'win32')
-        cmd = 'npm.cmd';
-    proc = spawn(cmd, ['start'], { cwd: path.join(path.dirname(__dirname), 'default_apps', 'taskbar') });
-
-    proc.stderr.on('data', (data) => {
-        console.error(data.toString());
-    });
-
-    proc.stdout.on('data', (data) => {
-        console.log(data.toString());
-    });
-}
 
 function createWindow() {
     let desktop = new BrowserWindow({
@@ -36,18 +18,18 @@ function createWindow() {
     desktop.loadFile('./src/main/index.html');
 
     taskbar = new Taskbar(desktop);
-    taskbar.onClick(({ app, start }) => {
-        let appWin = new BrowserWindow({
-            width: 800,
-            height: 600,
-            webPreferences: {
-                nodeIntegration: true
-            },
-            parent: desktop,
-            title: app
-        });
-        appWin.loadURL(start);
-    });
+    // taskbar.onClick(({ app, start }) => {
+    //     let appWin = new BrowserWindow({
+    //         width: 800,
+    //         height: 600,
+    //         webPreferences: {
+    //             nodeIntegration: true
+    //         },
+    //         parent: desktop,
+    //         title: app
+    //     });
+    //     appWin.loadURL(start);
+    // });
 
     desktop.maximize();
     desktop.on('closed', () => {
@@ -61,16 +43,16 @@ app.on('ready', _ => {
     setTimeout(createWindow, 500);
 });
 
-app.on('before-quit', (event) => {
-    if (proc !== null && process.env.DEV) {
-        console.log('terminating process');
-        if(process.platform == 'win32')
-        {
-            spawnSync("taskkill", ["/pid", proc.pid, '/f', '/t']);
-        }
-        else
-        {
-            proc.kill();
-        }
-    }
-});
+// app.on('before-quit', (event) => {
+//     if (proc !== null && process.env.DEV) {
+//         console.log('terminating process');
+//         if(process.platform == 'win32')
+//         {
+//             spawnSync("taskkill", ["/pid", proc.pid, '/f', '/t']);
+//         }
+//         else
+//         {
+//             proc.kill();
+//         }
+//     }
+// });

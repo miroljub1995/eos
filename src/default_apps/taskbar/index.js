@@ -1,9 +1,5 @@
-const { BrowserWindow, screen } = require('electron');
+const { BrowserWindow, screen, app } = require('electron');
 const path = require('path');
-
-let webSecurity = true;
-if (process.env.DEV)
-    webSecurity = false;
 
 const props = {
     width: 900,
@@ -12,8 +8,8 @@ const props = {
     //focusable: false,
     transparent: true,
     webPreferences: {
-        nodeIntegration: true,
-        webSecurity
+        contextIsolation: true,
+        preload: path.join(app.getAppPath(), 'src','main', 'preload.js')
     }
 };
 
@@ -44,33 +40,6 @@ class Taskbar extends BrowserWindow {
         this.setPosition(0, topOffset);
 
         this.openDevTools();
-
-        this.webContents.on('ipc-message', (event, channel, arg) => {
-            this.emit(channel, arg);
-        });
-        this.initEvents();
-    }
-
-    onClick = (callback) => {
-        //callback(arg);
-    }
-    
-        initEvents() {
-        this.on('itemClick', ({ app, start }) => {
-            let appWin = new BrowserWindow({
-                width: 800,
-                height: 600,
-                webPreferences: {
-                    nodeIntegration: true
-                },
-                parent: this.desktopWin,
-                title: app
-            });
-            appWin.loadURL(start);
-            this.apps[app] = {
-                windows: [appWin]
-            };
-        });
     }
 }
 

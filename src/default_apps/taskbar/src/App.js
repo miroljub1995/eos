@@ -1,38 +1,15 @@
 import React, { Component } from 'react';
 import './App.scss';
 
+const { getApps, open, getIconBase64 } = window.apps;
+
 function App() {
-
-  const fs = window.require('fs');
-  const { ipcRenderer, remote } = window.require('electron');
-  const { join } = window.require('path');
-
-  const rootFolder = remote.app.getAppPath();
-  const appsFolder = join(rootFolder, 'apps');
-
-  const apps = fs.readdirSync(appsFolder, { withFileTypes: true })
-    .filter(dirent => dirent.isDirectory())
-    .map(dirent => dirent.name);
-
+  const apps = getApps();
   const appsViews = apps.map(app => {
-    const appFolder = join(appsFolder, app);
-    var appConfig = JSON.parse(fs.readFileSync(join(appFolder, 'app.json'), 'utf8'));
-
-    let start = appConfig.start;
-    if (appConfig.isFile) {
-      start = join("file://", appFolder, start);
-    }
-
-    let imagePath = join(appFolder, appConfig.icon).replace(/\\/g, '/');
-    imagePath = join("file://", imagePath);
-    // const image = fs.readFileSync(imagePath);
-    // const base64 = `url('data:image/png;gase64,${new Buffer(image).toString('base64')}')`;
-    const imageUrl = `url('${imagePath}')`;
-    console.log(imageUrl);
-
+    const icon = getIconBase64(app);
     const appView = (
-      <div className="app-item" key={app} onClick={() => ipcRenderer.send('itemClick', { app, start })}>
-        <div className="icon" style={{ backgroundImage: imageUrl }}>
+      <div className="app-item" key={app} onClick={() => open(app)}>
+        <div className="icon" style={{ backgroundImage: `url('data:image/png;base64,${icon}')` }}>
         </div>
       </div>
     );
