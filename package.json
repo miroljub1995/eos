@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/miroljub1995/eos#readme",
   "dependencies": {
-    "electron": "^8.2.0"
+    "electron": "^9.4.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.2",
